@@ -5,10 +5,10 @@ namespace Biigle\Tests\Modules\MetadataIfdo;
 use Biigle\Modules\MetadataIfdo\ImageIfdoParser;
 use Biigle\Modules\MetadataIfdo\MetadataIfdoServiceProvider;
 use Biigle\Modules\MetadataIfdo\VideoIfdoParser;
-use Biigle\Services\MetadataParsing\ImageIfdoParser;
+use Biigle\Services\MetadataParsing\ParserFactory;
 use TestCase;
 
-class MetadataIfdoServiceProvider extends TestCase
+class MetadataIfdoServiceProviderTest extends TestCase
 {
     public function testServiceProvider()
     {
