@@ -1,0 +1,22 @@
+{
+    "name": "biigle/module",
+    "description": "A template for a new BIIGLE module.",
+    "keywords": ["biigle", "biigle-module"],
+    "license": "GPL-3.0-only",
+    "support": {
+      "source": "https://github.com/biigle/module",
+      "issues": "https://github.com/biigle/module/issues"
+    },
+    "homepage": "https://biigle.de",
+    "authors": [
+      {
+         "name": "Martin Zurowietz",
+         "email": "m.zurowietz@uni-bielefeld.de"
+      }
+    ],
+    "autoload": {
+      "psr-4": {
+         "Biigle\\Modules\\Module\\": "src"
+      }
+    }
+}
