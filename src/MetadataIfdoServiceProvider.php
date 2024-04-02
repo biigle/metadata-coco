@@ -1,6 +1,6 @@
 <?php
 
-namespace Biigle\Modules\Module;
+namespace Biigle\Modules\MetadataIfdo;
 
 use Illuminate\Support\ServiceProvider;
 use Biigle\Services\MetadataParsing\ParserFactory;
