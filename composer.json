@@ -19,6 +19,9 @@
          "Biigle\\Modules\\MetadataIfdo\\": "src"
       }
     },
+    "require": {
+        "biigle/ifdo":"^0.3 || ^1.0"
+    },
     "extra": {
         "laravel": {
             "providers": [
