@@ -2,8 +2,9 @@
 
 namespace Biigle\Modules\MetadataIfdo;
 
-use Illuminate\Support\ServiceProvider;
 use Biigle\Services\MetadataParsing\ParserFactory;
+use Biigle\Services\Modules;
+use Illuminate\Support\ServiceProvider;
 
 class MetadataIfdoServiceProvider extends ServiceProvider
 {
@@ -13,10 +14,18 @@ class MetadataIfdoServiceProvider extends ServiceProvider
    *
    * @return  void
    */
-    public function boot()
+    public function boot(Modules $modules)
     {
+        $this->loadViewsFrom(__DIR__.'/resources/views', 'metadata-ifdo');
+
         ParserFactory::extend(ImageIfdoParser::class, 'image');
         ParserFactory::extend(VideoIfdoParser::class, 'video');
+        $modules->register('metadata-ifdo', [
+            'viewMixins' => [
+                'metadataParsers',
+            ],
+            // 'apidoc' => [__DIR__.'/Http/Controllers/Api/'],
+        ]);
     }
 
     /**
