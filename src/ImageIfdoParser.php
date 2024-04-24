@@ -18,6 +18,14 @@ class ImageIfdoParser extends MetadataParser
     /**
      * {@inheritdoc}
      */
+    public static function getName(): string
+    {
+        return 'iFDO';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function recognizesFile(): bool
     {
         //
