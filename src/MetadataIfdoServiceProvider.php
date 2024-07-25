@@ -18,7 +18,7 @@ class MetadataIfdoServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'metadata-ifdo');
 
         ParserFactory::extend(IfdoParser::class, 'image');
-        ParserFactory::extend(VideoIfdoParser::class, 'video');
+        ParserFactory::extend(IfdoParser::class, 'video');
         $modules->register('metadata-ifdo', [
             'viewMixins' => [
                 'metadataParsers',

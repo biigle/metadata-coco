@@ -83,6 +83,12 @@
         "id": "4",
         "name": "Trash"
       }
+    ],
+    "image-annotation-creators": [
+      {
+        "id": "4b6f42ff-6198-4b52-aa1c-fde5aa50265b",
+        "name": "Hans Wurst"
+      }
     ]
   },
   "image-set-items": {
@@ -94,138 +100,136 @@
       "image-depth": 2248,
       "image-camera-yaw-degrees": 20
     },
-    "SO268-2_100-1_OFOS_SO_CAM-1_20190406_052726.JPG": [
-      {
-        "image-datetime": "2019-04-06 05:27:26.000000",
-        "image-uuid": "884dcc58-3ade-4d47-af11-2701356206c0",
-        "image-hash-sha256": "cc877a4f71cbc24ce0859fe9449a862d5b65dd1ca8e741015626e15d4b292da9",
-        "image-handle": "https://example.com/884dcc58-3ade-4d47-af11-2701356206c0",
-        "image-altitude": -4129.6,
-        "image-latitude": 11.8582192,
-        "image-longitude": -117.0214286,
-        "image-area-square-meter": 5.1,
-        "image-meters-above-ground": 2.1,
-        "image-camera-yaw-degrees": 21,
-        "image-annotations": [
-          {
-            "shape": "single-pixel",
-            "coordinates": [[
-              3632.34,
-              1736.22
-            ]],
-            "labels": [
-              {
-                "label": "1",
-                "annotator": "4b6f42ff-6198-4b52-aa1c-fde5aa50265b",
-                "created-at": "2023-11-22T13:59:52.000000Z"
-              }
-            ]
-          },
-          {
-            "shape": "single-pixel",
-            "coordinates": [[
-              2857.97,
-              2182.47
-            ]],
-            "labels": [
-              {
-                "label": "2",
-                "annotator": "4b6f42ff-6198-4b52-aa1c-fde5aa50265b",
-                "created-at": "2023-11-22T13:59:53.000000Z"
-              }
-            ]
-          },
-          {
-            "shape": "single-pixel",
-            "coordinates": [[
-              3645.47,
-              2615.59
-            ]],
-            "labels": [
-              {
-                "label": "3",
-                "annotator": "4b6f42ff-6198-4b52-aa1c-fde5aa50265b",
-                "created-at": "2023-11-22T13:59:54.000000Z"
-              }
-            ]
-          },
-          {
-            "shape": "rectangle",
-            "coordinates": [[
-              1251.9,
-              1604.93,
-              963.15,
-              2031.5,
-              1195.92,
-              2189.07,
-              1484.67,
-              1762.5
-            ]],
-            "labels": [
-              {
-                "label": "4",
-                "annotator": "4b6f42ff-6198-4b52-aa1c-fde5aa50265b",
-                "created-at": "2023-11-22T13:59:59.000000Z"
-              }
-            ]
-          },
-          {
-            "shape": "circle",
-            "coordinates": [[
-              2372.34,
-              3160.28,
-              220.11
-            ]],
-            "labels": [
-              {
-                "label": "1",
-                "annotator": "4b6f42ff-6198-4b52-aa1c-fde5aa50265b",
-                "created-at": "2023-11-22T14:00:02.000000Z"
-              }
-            ]
-          },
-          {
-            "shape": "polyline",
-            "coordinates": [[
-              4268.91,
-              3678.72,
-              5207.34,
-              3652.47,
-              5443.59,
-              2871.53
-            ]],
-            "labels": [
-              {
-                "label": "3",
-                "annotator": "4b6f42ff-6198-4b52-aa1c-fde5aa50265b",
-                "created-at": "2023-11-22T14:00:07.000000Z"
-              }
-            ]
-          },
-          {
-            "shape": "polygon",
-            "coordinates": [[
-              4715.16,
-              1552.47,
-              5627.34,
-              1703.41,
-              5666.72,
-              948.72,
-              4918.59,
-              699.34,
-              4715.16,
-              1552.47
-            ]],
-            "labels": [
-              {
-                "label": "4",
-                "annotator": "4b6f42ff-6198-4b52-aa1c-fde5aa50265b",
-                "created-at": "2023-11-22T14:00:14.000000Z"
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "SO268-2_100-1_OFOS_SO_CAM-1_20190406_052726.JPG": {
+      "image-datetime": "2019-04-06 05:27:26.000000",
+      "image-uuid": "884dcc58-3ade-4d47-af11-2701356206c0",
+      "image-hash-sha256": "cc877a4f71cbc24ce0859fe9449a862d5b65dd1ca8e741015626e15d4b292da9",
+      "image-handle": "https://example.com/884dcc58-3ade-4d47-af11-2701356206c0",
+      "image-altitude": -4129.6,
+      "image-latitude": 11.8582192,
+      "image-longitude": -117.0214286,
+      "image-area-square-meter": 5.1,
+      "image-meters-above-ground": 2.1,
+      "image-camera-yaw-degrees": 21,
+      "image-annotations": [
+        {
+          "shape": "single-pixel",
+          "coordinates": [[
+            3632.34,
+            1736.22
+          ]],
+          "labels": [
+            {
+              "label": "1",
+              "annotator": "4b6f42ff-6198-4b52-aa1c-fde5aa50265b",
+              "created-at": "2023-11-22T13:59:52.000000Z"
+            }
+          ]
+        },
+        {
+          "shape": "single-pixel",
+          "coordinates": [[
+            2857.97,
+            2182.47
+          ]],
+          "labels": [
+            {
+              "label": "2",
+              "annotator": "4b6f42ff-6198-4b52-aa1c-fde5aa50265b",
+              "created-at": "2023-11-22T13:59:53.000000Z"
+            }
+          ]
+        },
+        {
+          "shape": "single-pixel",
+          "coordinates": [[
+            3645.47,
+            2615.59
+          ]],
+          "labels": [
+            {
+              "label": "3",
+              "annotator": "4b6f42ff-6198-4b52-aa1c-fde5aa50265b",
+              "created-at": "2023-11-22T13:59:54.000000Z"
+            }
+          ]
+        },
+        {
+          "shape": "rectangle",
+          "coordinates": [[
+            1251.9,
+            1604.93,
+            963.15,
+            2031.5,
+            1195.92,
+            2189.07,
+            1484.67,
+            1762.5
+          ]],
+          "labels": [
+            {
+              "label": "4",
+              "annotator": "4b6f42ff-6198-4b52-aa1c-fde5aa50265b",
+              "created-at": "2023-11-22T13:59:59.000000Z"
+            }
+          ]
+        },
+        {
+          "shape": "circle",
+          "coordinates": [[
+            2372.34,
+            3160.28,
+            220.11
+          ]],
+          "labels": [
+            {
+              "label": "1",
+              "annotator": "4b6f42ff-6198-4b52-aa1c-fde5aa50265b",
+              "created-at": "2023-11-22T14:00:02.000000Z"
+            }
+          ]
+        },
+        {
+          "shape": "polyline",
+          "coordinates": [[
+            4268.91,
+            3678.72,
+            5207.34,
+            3652.47,
+            5443.59,
+            2871.53
+          ]],
+          "labels": [
+            {
+              "label": "3",
+              "annotator": "4b6f42ff-6198-4b52-aa1c-fde5aa50265b",
+              "created-at": "2023-11-22T14:00:07.000000Z"
+            }
+          ]
+        },
+        {
+          "shape": "polygon",
+          "coordinates": [[
+            4715.16,
+            1552.47,
+            5627.34,
+            1703.41,
+            5666.72,
+            948.72,
+            4918.59,
+            699.34,
+            4715.16,
+            1552.47
+          ]],
+          "labels": [
+            {
+              "label": "4",
+              "annotator": "4b6f42ff-6198-4b52-aa1c-fde5aa50265b",
+              "created-at": "2023-11-22T14:00:14.000000Z"
+            }
+          ]
+        }
+      ]
+    }
   }
 }

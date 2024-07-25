@@ -27,5 +27,34 @@ class ImageIfdoParserTest extends TestCase
         $this->assertEquals(2.1, $file->distanceToGround);
         $this->assertEquals(5.1, $file->area);
         $this->assertEquals(21, $file->yaw);
+
+        $this->assertCount(7, $file->getAnnotations());
+        $annotation = array_pop($file->annotations);
+
+        $this->assertEquals(3, $annotation->shape->id);
+        $this->assertEquals('Hans Wurst', $annotation->labels[0]->user->name);
+    }
+
+    public function testGetVideoMetadata()
+    {
+        $file   = new File(__DIR__ . "/files/video-example-1.json");
+        $parser = new IfdoParser($file);
+        $data   = $parser->getMetadata();
+        $this->assertEquals(MediaType::videoId(), $data->type->id);
+        $this->assertNull($data->name);
+        $this->assertNull($data->url);
+        $this->assertNull($data->handle);
+        $this->assertCount(1, $data->getFiles());
+        $file = $data->getFiles()->last();
+        $this->assertEquals('SO242_2_163-1_LowerHD.mp4', $file->name);
+        $this->assertEquals('2019-04-06 04:29:27.000000', $file->takenAt);
+        $this->assertEquals(-117.0214286, $file->lng);
+        $this->assertEquals(11.8582192, $file->lat);
+        $this->assertEquals(-4129.6, $file->gpsAltitude);
+        $this->assertEquals(2.1, $file->distanceToGround);
+        $this->assertEquals(5.1, $file->area);
+        $this->assertEquals(21, $file->yaw);
+
+        // var_dump($file);
     }
 }
