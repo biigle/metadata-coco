@@ -91,7 +91,7 @@ class Converter
         $class  = $this->annotationClass();
         $params = [
             $this->ifdoShapeToBiigleShape($ifdoAnnotation['shape']),
-            $ifdoAnnotation['coordinates'],
+            $this->ifdoParseCoordinates($ifdoAnnotation['coordinates']),
             $this->ifdoLabelsToBiigleLabelAndUsers($ifdoAnnotation['labels']),
         ];
 
@@ -200,5 +200,14 @@ class Converter
         case 'video':
             return 'Biigle\Services\MetadataParsing\VideoAnnotation';
         }
+    }
+
+    private function ifdoParseCoordinates($coordinates)
+    {
+        if ($this->acquisitionFormat === 'photo') {
+            return $coordinates[0];
+        }
+
+        return $coordinates;
     }
 }
