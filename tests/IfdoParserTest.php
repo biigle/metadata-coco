@@ -29,9 +29,9 @@ class ImageIfdoParserTest extends TestCase
         $parser = new IfdoParser($file);
         $data   = $parser->getMetadata();
         $this->assertSame(MediaType::imageId(), $data->type->id);
-        $this->assertNull($data->name);
+        $this->assertSame('SO268 SO268-2_100-1_OFOS SO_CAM-1_Photo_OFOS', $data->name);
         $this->assertNull($data->url);
-        $this->assertNull($data->handle);
+        $this->assertSame('20.500.12085/d7546c4b-307f-4d42-8554-33236c577450', $data->handle);
         $this->assertCount(2, $data->getFiles());
         $file = $data->getFiles()->last();
         $this->assertSame('SO268-2_100-1_OFOS_SO_CAM-1_20190406_052726.JPG', $file->name);
@@ -57,9 +57,9 @@ class ImageIfdoParserTest extends TestCase
         $parser = new IfdoParser($file);
         $data   = $parser->getMetadata();
         $this->assertSame(MediaType::videoId(), $data->type->id);
-        $this->assertNull($data->name);
+        $this->assertSame('SO268 SO268-2_100-1_OFOS SO_CAM-1_Photo_OFOS', $data->name);
         $this->assertNull($data->url);
-        $this->assertNull($data->handle);
+        $this->assertSame('20.500.12085/d7546c4b-307f-4d42-8554-33236c577450', $data->handle);
         $this->assertCount(1, $data->getFiles());
         $file = $data->getFiles()->last();
         $this->assertSame('SO242_2_163-1_LowerHD.mp4', $file->name);

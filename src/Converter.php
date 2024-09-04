@@ -22,10 +22,16 @@ class Converter
 
     public function convert($ifdo)
     {
-        $this->annotators = $this->extractIfdoAnnotators($ifdo->getImageSetHeader()['image-annotation-creators']);
-        $this->labels     = $this->extractIfdoLabels($ifdo->getImageSetHeader()['image-annotation-labels']);
+        $header = $ifdo->getImageSetHeader();
+        $this->annotators = $this->extractIfdoAnnotators($header['image-annotation-creators']);
+        $this->labels     = $this->extractIfdoLabels($header['image-annotation-labels']);
 
-        $data = new VolumeMetadata($this->mediaType());
+        $data = new VolumeMetadata(
+            type: $this->mediaType(),
+            name: $header['image-set-name'] ?? null,
+            handle: $this->parseHandle($header['image-set-handle'] ?? null),
+        );
+
         foreach ($ifdo->getImageSetItems() as $name => $items)
         {
             if ( ! array_is_list($items))
@@ -209,5 +215,10 @@ class Converter
         }
 
         return $coordinates;
+    }
+
+    private function parseHandle(?string $handle): ?string
+    {
+        return substr(parse_url($handle ?? '', PHP_URL_PATH) ?? '', 1) ?: null;
     }
 }
