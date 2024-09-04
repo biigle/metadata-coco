@@ -62,11 +62,17 @@
             "uri": "https://dm.pages.geomar.de/equipment/equipment/SO/CAM/SO_CAM-1_Photo_OFOS/"
         },
         "image-set-data-handle": "20.500.12085/d7546c4b-307f-4d42-8554-33236c577450@data",
-        "image-set-handle": "https://hdl.handle.net/someHandle",
+        "image-set-handle": "https://hdl.handle.net/20.500.12085/d7546c4b-307f-4d42-8554-33236c577450",
         "image-set-ifdo-version": "v2.1.0",
         "image-set-metadata-handle": "20.500.12085/d7546c4b-307f-4d42-8554-33236c577450@metadata",
         "image-set-name": "SO268 SO268-2_100-1_OFOS SO_CAM-1_Photo_OFOS",
-        "image-set-uuid": "d7546c4b-307f-4d42-8554-33236c577450"
+        "image-set-uuid": "d7546c4b-307f-4d42-8554-33236c577450",
+        "image-creators": [
+            {
+              "name": "Timm Schoening",
+              "uri": "https://orcid.org/0000-0002-0035-3282"
+            }
+        ]
     },
     "image-set-items":
     {

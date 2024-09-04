@@ -9,6 +9,20 @@ use TestCase;
 
 class ImageIfdoParserTest extends TestCase
 {
+    public function testRecognizesFileImage()
+    {
+        $file   = new File(__DIR__ . "/files/image-ifdo.json");
+        $parser = new IfdoParser($file);
+        $this->assertTrue($parser->recognizesFile());
+    }
+
+    public function testRecognizesFileVideo()
+    {
+        $file   = new File(__DIR__ . "/files/video-example-1.json");
+        $parser = new IfdoParser($file);
+        $this->assertTrue($parser->recognizesFile());
+    }
+
     public function testGetMetadata()
     {
         $file   = new File(__DIR__ . "/files/image-ifdo.json");

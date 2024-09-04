@@ -23,15 +23,13 @@
     "image-quality": "raw",
     "image-resolution": "mm",
     "image-scale-reference": "laser marker",
-    "image-set-data-handle": "20.500.12085/d7546c4b-307f-4d42-8554-33236c577450@data",
-    "image-set-handle": "20.500.12085/d7546c4b-307f-4d42-8554-33236c577450",
     "image-set-metadata-handle": "20.500.12085/d7546c4b-307f-4d42-8554-33236c577450@metadata",
     "image-set-name": "SO268 SO268-2_100-1_OFOS SO_CAM-1_Photo_OFOS",
     "image-set-uuid": "d7546c4b-307f-4d42-8554-33236c577450",
     "image-spectral-resolution": "rgb",
     "image-copyright": "(c) GEOMAR Helmholtz Centre for Ocean Research Kiel. Contact: presse@geomar.de",
     "image-abstract": "Image Abstract",
-    "image-set-handle": "https://hdl.handle.net/someHandle",
+    "image-set-handle": "https://hdl.handle.net/20.500.12085/d7546c4b-307f-4d42-8554-33236c577450",
     "image-license": {
         "name": "CC-BY",
         "uri": "https://creativecommons.org/licenses/by/4.0/legalcode"
