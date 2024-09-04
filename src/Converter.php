@@ -129,7 +129,12 @@ class Converter
         $labels = [];
         foreach ($ifdoLabels as $ifdoLabel)
         {
-            $labels[$ifdoLabel['id']] = new Label($ifdoLabel['id'], $ifdoLabel['name']);
+            $labels[$ifdoLabel['id']] = new Label(
+                $ifdoLabel['id'],
+                $ifdoLabel['name'],
+                $ifdoLabel['color'] ?? null,
+                $ifdoLabel['uuid'] ?? null,
+            );
         }
         return $labels;
     }
@@ -139,7 +144,11 @@ class Converter
         $annotators = [];
         foreach ($ifdoAnnotators as $ifdoAnnotator)
         {
-            $annotators[$ifdoAnnotator['id']] = new User($ifdoAnnotator['id'], $ifdoAnnotator['name']);
+            $annotators[$ifdoAnnotator['id']] = new User(
+                $ifdoAnnotator['id'],
+                $ifdoAnnotator['name'],
+                $ifdoAnnotator['uuid'] ?? null,
+            );
         }
         return $annotators;
     }

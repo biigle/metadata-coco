@@ -79,12 +79,15 @@
       },
       {
         "id": "4",
-        "name": "Trash"
+        "name": "Trash",
+        "uuid": "8a45f7e9-86aa-4ca8-bd58-2b2178ec4163",
+        "color": "ff5900"
       }
     ],
     "image-annotation-creators": [
       {
         "id": "4b6f42ff-6198-4b52-aa1c-fde5aa50265b",
+        "uuid": "4b6f42ff-6198-4b52-aa1c-fde5aa50265b",
         "name": "Hans Wurst"
       }
     ]

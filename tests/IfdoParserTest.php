@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Biigle\Shape;
 use TestCase;
 
-class ImageIfdoParserTest extends TestCase
+class IfdoParserTest extends TestCase
 {
     public function testRecognizesFileImage()
     {
@@ -48,6 +48,10 @@ class ImageIfdoParserTest extends TestCase
 
         $this->assertSame(Shape::polygonId(), $annotation->shape->id);
         $this->assertSame('Hans Wurst', $annotation->labels[0]->user->name);
+        $this->assertSame('4b6f42ff-6198-4b52-aa1c-fde5aa50265b', $annotation->labels[0]->user->uuid);
+        $this->assertSame('Trash', $annotation->labels[0]->label->name);
+        $this->assertSame('8a45f7e9-86aa-4ca8-bd58-2b2178ec4163', $annotation->labels[0]->label->uuid);
+        $this->assertSame('ff5900', $annotation->labels[0]->label->color);
         $this->assertSame(4715.16, $annotation->points[0]);
     }
 
@@ -76,6 +80,10 @@ class ImageIfdoParserTest extends TestCase
 
         $this->assertSame(Shape::circleId(), $annotation->shape->id);
         $this->assertSame('Timm Schoening', $annotation->labels[0]->user->name);
+        $this->assertSame('4b6f42ff-6198-4b52-aa1c-fde5aa50265b', $annotation->labels[0]->user->uuid);
+        $this->assertSame('Animal', $annotation->labels[0]->label->name);
+        $this->assertSame('8a45f7e9-86aa-4ca8-bd58-2b2178ec4163', $annotation->labels[0]->label->uuid);
+        $this->assertSame('ff5900', $annotation->labels[0]->label->color);
         $this->assertSame(681.7, $annotation->points[0][0]);
         $this->assertSame(0.402947, $annotation->frames[0]);
     }
