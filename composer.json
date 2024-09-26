@@ -1,11 +1,11 @@
 {
-    "name": "biigle/metadata-ifdo",
-    "description": "BIIGLE module for iFDO metadata.",
+    "name": "biigle/metadata-coco",
+    "description": "BIIGLE module for COCO metadata.",
     "keywords": ["biigle", "biigle-module"],
     "license": "GPL-3.0-only",
     "support": {
-      "source": "https://github.com/biigle/metadata-ifdo",
-      "issues": "https://github.com/biigle/metadata-ifdo/issues"
+      "source": "https://github.com/biigle/metadata-coco",
+      "issues": "https://github.com/biigle/metadata-coco/issues"
     },
     "homepage": "https://biigle.de",
     "authors": [
@@ -16,16 +16,13 @@
     ],
     "autoload": {
       "psr-4": {
-         "Biigle\\Modules\\MetadataIfdo\\": "src"
+         "Biigle\\Modules\\MetadataCoco\\": "src"
       }
-    },
-    "require": {
-        "biigle/ifdo":"^0.4 || ^1.0"
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Biigle\\Modules\\MetadataIfdo\\MetadataIfdoServiceProvider"
+                "Biigle\\Modules\\MetadataCoco\\MetadataCocoServiceProvider"
             ]
         }
     }

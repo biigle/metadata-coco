@@ -1,12 +1,12 @@
-# BIIGLE Metadata iFDO
+# BIIGLE Metadata COCO
 
-[![Test status](https://github.com/biigle/metadata-ifdo/workflows/Tests/badge.svg)](https://github.com/biigle/metadata-ifdo/actions?query=workflow%3ATests)
+[![Test status](https://github.com/biigle/metadata-coco/workflows/Tests/badge.svg)](https://github.com/biigle/metadata-coco/actions?query=workflow%3ATests)
 
-This is a BIIGLE module to add support for [iFDO](https://marine-imaging.com/fair/ifdos/iFDO-overview) metadata files.
+This is a BIIGLE module to add support for COCO metadata files.
 
 ## Installation
 
-Run `composer require biigle/metadata-ifdo`.
+Run `composer require biigle/metadata-coco`.
 
 ## Developing
 

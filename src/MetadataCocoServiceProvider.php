@@ -1,13 +1,12 @@
 <?php
-namespace Biigle\Modules\MetadataIfdo;
+namespace Biigle\Modules\MetadataCoco;
 
 use Biigle\Services\MetadataParsing\ParserFactory;
 use Biigle\Services\Modules;
 use Illuminate\Support\ServiceProvider;
 
-class MetadataIfdoServiceProvider extends ServiceProvider
+class MetadataCocoServiceProvider extends ServiceProvider
 {
-
     /**
      * Bootstrap the application events.
      *
@@ -15,11 +14,10 @@ class MetadataIfdoServiceProvider extends ServiceProvider
      */
     public function boot(Modules $modules)
     {
-        $this->loadViewsFrom(__DIR__ . '/resources/views', 'metadata-ifdo');
+        $this->loadViewsFrom(__DIR__ . '/resources/views', 'metadata-coco');
 
-        ParserFactory::extend(IfdoParser::class, 'image');
-        ParserFactory::extend(IfdoParser::class, 'video');
-        $modules->register('metadata-ifdo', [
+        ParserFactory::extend(CocoParser::class, 'image');
+        $modules->register('metadata-coco', [
             'viewMixins' => [
                 'metadataParsers',
             ],
