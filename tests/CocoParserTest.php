@@ -2,6 +2,7 @@
 namespace Biigle\Tests\Modules\MetadataCoco;
 use Symfony\Component\HttpFoundation\File\File;
 use Biigle\Modules\MetadataCoco\CocoParser;
+use Biigle\MediaType;
 
 use TestCase;
 
@@ -51,6 +52,25 @@ class CocoParserTest extends TestCase
 
     public function testGetMetadata()
     {
-        $this->assertFalse(false);
+        $file   = new File(__DIR__ . "/files/full-coco-import-volume.json");
+        $parser = new CocoParser($file);
+        $metadata = $parser->getMetadata();
+        
+        $this->assertSame(MediaType::imageId(), $metadata->type->id);
+        $this->assertNull($metadata->name);
+        $this->assertNull($metadata->url);
+        $this->assertNull($metadata->handle);
+        
+        $this->assertCount(1, $metadata->getFiles());
+
+        $file = $metadata->getFiles()->last();
+        $this->assertSame("31c3-Wimmelbild-ccby.jpg", $file->name);
+        $this->assertSame(null, $file->lng);
+        $this->assertSame(null, $file->lat);
+        
+        $this->assertTrue($metadata->hasAnnotations());
+
+        $annotations = $file->getAnnotations();
+        $this->assertCount(4, $annotations);
     }
 }

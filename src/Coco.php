@@ -4,7 +4,7 @@ namespace Biigle\Modules\MetadataCoco;
 
 class Coco
 {
-    public ?Info $info;
+    public Info $info;
     public array $images;
     public array $annotations;
     public ?array $licenses;
@@ -35,9 +35,10 @@ class Coco
             return Image::create($imageData);
         }, $data['images']);
 
-        // Handle annotations (assuming no specific validation required)
-        $instance->annotations = $data['annotations'];
-
+        // Create the Annotation objects
+        $instance->annotations = array_map(function ($annotationData) {
+            return Annotation::create($annotationData);
+        }, $data['annotations']);
 
         // Create the Category objects
         $instance->categories = array_map(function ($categoryData) {
@@ -50,7 +51,12 @@ class Coco
                 return License::create($licenseData);
             }, $data['licenses']);
         }
+
+        // validate the data consistency
         $instance->validateLicensesInData();
+        $instance->validateCategoriesInData();
+        $instance->validateImagesInData();
+
         return $instance;
     }
 
@@ -81,6 +87,32 @@ class Coco
         foreach ($this->images as $image) {
             if (isset($image->license) && !in_array($image->license, $licenseIds)) {
                 throw new \Exception("Invalid license ID '{$image->license}' in image '{$image->id}'");
+            }
+        }
+    }
+
+    public function validateCategoriesInData(): void
+    {
+        $categoryIds = array_map(function ($category) {
+            return $category->id;
+        }, $this->categories);
+
+        foreach ($this->annotations as $annotation) {
+            if (!in_array($annotation->category_id, $categoryIds)) {
+                throw new \Exception("Invalid category ID '{$annotation['category_id']}' in annotation '{$annotation['id']}'");
+            }
+        }
+    }
+
+    public function validateImagesInData(): void
+    {
+        $imageIds = array_map(function ($image) {
+            return $image->id;
+        }, $this->images);
+
+        foreach ($this->annotations as $annotation) {
+            if (!in_array($annotation->image_id, $imageIds)) {
+                throw new \Exception("Invalid image ID '{$annotation['image_id']}' in annotation '{$annotation['id']}'");
             }
         }
     }
