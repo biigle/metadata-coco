@@ -2,13 +2,15 @@
 
 namespace Biigle\Modules\MetadataCoco;
 
+use Biigle\MediaType;
+use Biigle\Shape;
 use Biigle\Services\MetadataParsing\MetadataParser;
 use Biigle\Services\MetadataParsing\VolumeMetadata;
-use Biigle\Modules\MetadataCoco\Coco;
-use Biigle\MediaType;
 use Biigle\Services\MetadataParsing\FileMetadata;
 use Biigle\Services\MetadataParsing\Annotation;
-use Biigle\Shape;
+use Biigle\Modules\MetadataCoco\Coco;
+use Biigle\Modules\MetadataCoco\Image;
+use Biigle\Modules\MetadataCoco\Annotation as MetadataAnnotation;
 
 class CocoParser extends MetadataParser
 {
@@ -74,26 +76,32 @@ class CocoParser extends MetadataParser
             $fileMetaData = new FileMetadata(
                 name: $image->file_name
             );
+            
+            $this->processAnnotations($image, $fileMetaData);
+
             $metadata->addFile($fileMetaData);
-
-            $annotations = array_filter($coco->annotations, function ($annotation) use ($image) {
-                return $annotation->image_id === $image->id;
-            });
-
-            foreach ($annotations as $annotation) {
-                $annotation = new Annotation(
-                    shape: $this->get_shape($annotation),
-                    points: $annotation->segmentation,
-                    labels: $this->get_labels($annotation),
-                );
-                $fileMetaData->addAnnotation($annotation);
-            }
         }
     
         return $metadata;
     }
 
-    private function get_labels($annotation): array
+    private function processAnnotations(Image $image, FileMetaData $fileMetaData)
+    {
+        $annotations = array_filter($this->getCoco()->annotations, function ($annotation) use ($image) {
+            return $annotation->image_id === $image->id;
+        });
+
+        foreach ($annotations as $annotation) {
+            $annotation = new Annotation(
+                shape: $this->get_shape($annotation),
+                points: $annotation->segmentation,
+                labels: $this->get_labels($annotation),
+            );
+            $fileMetaData->addAnnotation($annotation);
+        }
+    }
+
+    private function get_labels(MetadataAnnotation $annotation): array
     {
         $category = array_filter($this->getCoco()->categories, function ($category) use ($annotation) {
             return $category->id === $annotation->category_id;
@@ -101,7 +109,7 @@ class CocoParser extends MetadataParser
         return [$category->name];
     }
 
-    public function get_shape($annotation): Shape
+    public function get_shape(MetadataAnnotation $annotation): Shape
     {
         return Shape::polygon();
     }
