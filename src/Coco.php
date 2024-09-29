@@ -2,6 +2,8 @@
 
 namespace Biigle\Modules\MetadataCoco;
 
+use Biigle\Services\MetadataParsing\User;
+
 class Coco
 {
     public Info $info;
@@ -9,6 +11,15 @@ class Coco
     public array $annotations;
     public ?array $licenses;
     public array $categories;
+
+    public static function getCocoUser(): User
+    {
+        return new User(
+            id: 1,
+            name: 'COCO Import',
+            uuid: '53df1e88-f547-4164-b3b3-b017ad21a7b9'
+        );
+    }
 
     public static function createFromPath(string $path): self
     {

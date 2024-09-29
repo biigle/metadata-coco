@@ -3,6 +3,8 @@
 namespace Biigle\Modules\MetadataCoco;
 
 use Biigle\Shape;
+use Biigle\Services\MetadataParsing\Label;
+use Biigle\Services\MetadataParsing\LabelAndUser;
 
 class Annotation
 {
@@ -35,6 +37,18 @@ class Annotation
                 throw new \Exception("Missing key '$key' in Annotation");
             }
         }
+    }
+
+    public function getLabel(array $categories): Label {
+        $categoryIndex = array_search($this->category_id, array_column($categories, 'id'));
+        $category = $categories[$categoryIndex];
+        return new Label(id: $category->id, name:  $category->name);
+    }
+
+    public function getLabelAndUsers(array $categories): array {
+        $cocoUser = Coco::getCocoUser();
+        $label = $this->getLabel($categories);
+        return [new LabelAndUser(label: $label, user: $cocoUser)];
     }
 
     public function getShape(): Shape

@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Biigle\MediaType;
 use Biigle\Shape;
 use Biigle\Modules\MetadataCoco\Annotation;
+use Biigle\Modules\MetadataCoco\Coco;
 use Biigle\Modules\MetadataCoco\CocoParser;
 
 use TestCase;
@@ -67,7 +68,7 @@ class CocoParserTest extends TestCase
 
         $this->assertCount(1, $metadata->getFiles());
 
-        $file = $metadata->getFiles()->last();
+        $file = $metadata->getFiles()->first();
         $this->assertSame("31c3-Wimmelbild-ccby.jpg", $file->name);
         $this->assertSame(null, $file->lng);
         $this->assertSame(null, $file->lat);
@@ -82,6 +83,23 @@ class CocoParserTest extends TestCase
         $this->assertSame(Shape::polygon(), $annotations[3]->shape);
         $this->assertSame(Shape::rectangle(), $annotations[4]->shape);
         $this->assertSame(Shape::polygon(), $annotations[5]->shape);
+
+        $users = $file->getUsers();
+        $cocoUser = Coco::getCocoUser();
+        $this->assertCount(1, $users);
+        $this->assertSame($cocoUser->uuid, $users[array_key_first($users)]->uuid);
+
+        $labels = $file->getAnnotationLabels();
+        $this->assertCount(1, $labels);
+        $this->assertSame("Animal", $labels[array_key_first($labels)]->name);
+
+        $this->assertSame("Animal", $annotations[0]->labels[0]->label->name);
+        $this->assertSame("Animal", $annotations[1]->labels[0]->label->name);
+        $this->assertSame("Animal", $annotations[2]->labels[0]->label->name);
+        $this->assertSame("Animal", $annotations[3]->labels[0]->label->name);
+        $this->assertSame("Animal", $annotations[4]->labels[0]->label->name);
+        $this->assertSame("Animal", $annotations[5]->labels[0]->label->name);
+
     }
 
     public function testIsPointShape()

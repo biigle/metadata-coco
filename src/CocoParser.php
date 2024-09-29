@@ -95,17 +95,9 @@ class CocoParser extends MetadataParser
             $metaDataAnnotation = new Annotation(
                 shape: $annotation->getShape(),
                 points: $annotation->segmentation,
-                labels: [],
+                labels: $annotation->getLabelAndUsers($this->getCoco()->categories),
             );
             $imageMetaData->addAnnotation($metaDataAnnotation);
         }
-    }
-
-    private function get_labels(MetadataAnnotation $annotation): array
-    {
-        $category = array_filter($this->getCoco()->categories, function ($category) use ($annotation) {
-            return $category->id === $annotation->category_id;
-        })[0];
-        return [$category->name];
     }
 }
