@@ -3,6 +3,7 @@
 namespace Biigle\Modules\MetadataCoco;
 
 use Biigle\Shape;
+use Biigle\Label as LabelModel;
 use Biigle\Services\MetadataParsing\Label;
 use Biigle\Services\MetadataParsing\LabelAndUser;
 
@@ -46,7 +47,8 @@ class Annotation
     {
         $categoryIndex = array_search($this->category_id, array_column($categories, 'id'));
         $category = $categories[$categoryIndex];
-        return new Label(id: $category->id, name: $category->name);
+        $labelModel = LabelModel::where('id', $category->id)->orWhere('name', $category->name)->first();
+        return new Label(id: $category->id, name: $category->name, uuid: $labelModel->uuid ?? null);
     }
 
     public function getLabelAndUsers(array $categories): array
