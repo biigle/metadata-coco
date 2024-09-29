@@ -47,8 +47,7 @@ class Annotation
     {
         $categoryIndex = array_search($this->category_id, array_column($categories, 'id'));
         $category = $categories[$categoryIndex];
-        $labelModel = LabelModel::where('id', $category->id)->orWhere('name', $category->name)->first();
-        return new Label(id: $category->id, name: $category->name, uuid: $labelModel->uuid ?? null);
+        return new Label(id: $category->id, name: $category->name);
     }
 
     public function getLabelAndUsers(array $categories): array

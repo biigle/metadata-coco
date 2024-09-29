@@ -5,7 +5,7 @@ namespace Biigle\Modules\MetadataCoco;
 use Biigle\MediaType;
 use Biigle\Services\MetadataParsing\MetadataParser;
 use Biigle\Services\MetadataParsing\VolumeMetadata;
-use Biigle\Services\MetadataParsing\Annotation;
+use Biigle\Services\MetadataParsing\ImageAnnotation;
 use Biigle\Services\MetadataParsing\ImageMetadata;
 use Biigle\Modules\MetadataCoco\Coco;
 use Biigle\Modules\MetadataCoco\Image;
@@ -75,7 +75,7 @@ class CocoParser extends MetadataParser
                 name: $image->file_name
             );
 
-            $this->processAnnotations($image, $imageMetaData);
+            $this->processImageAnnotations($image, $imageMetaData);
 
             $metadata->addFile($imageMetaData);
         }
@@ -83,14 +83,14 @@ class CocoParser extends MetadataParser
         return $metadata;
     }
 
-    private function processAnnotations(Image $image, ImageMetadata $imageMetaData)
+    private function processImageAnnotations(Image $image, ImageMetadata $imageMetaData)
     {
         $annotations = array_filter($this->getCoco()->annotations, function ($annotation) use ($image) {
             return $annotation->image_id === $image->id;
         });
 
         foreach ($annotations as $annotation) {
-            $metaDataAnnotation = new Annotation(
+            $metaDataAnnotation = new ImageAnnotation(
                 shape: $annotation->getShape(),
                 points: $annotation->getPoints(),
                 labels: $annotation->getLabelAndUsers($this->getCoco()->categories),
