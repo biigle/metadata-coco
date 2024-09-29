@@ -21,7 +21,7 @@ class Annotation
         $instance->image_id = $data['image_id'];
         $instance->category_id = $data['category_id'];
         $instance->bbox = $data['bbox'] ?? null;
-        $instance->segmentation = $data['segmentation'] ?? null;
+        $instance->segmentation = $data['segmentation'][0] ?? null;
 
         return $instance;
     }
@@ -39,6 +39,10 @@ class Annotation
 
     public function getShape(): Shape
     {
+        if (count($this->segmentation) < 2) {
+            return Shape::polygon();
+        }
+
         if ($this->isPointShape()) {
             return Shape::point();
         }
@@ -47,12 +51,12 @@ class Annotation
             return Shape::rectangle();
         }
 
-        if ($this->isCircleShape()) {
-            return Shape::circle();
-        }
-
         if ($this->isLineShape()) {
             return Shape::line();
+        }
+
+        if ($this->isCircleShape()) {
+            return Shape::circle();
         }
 
         return Shape::polygon();
@@ -80,7 +84,37 @@ class Annotation
 
     public function isCircleShape(): bool
     {
-        return false;
+    
+        // Tolerance for floating-point comparison
+        $tolerance = 0.001;
+
+        // Split the coordinates into x, y pairs
+        $points = [];
+        for ($i = 0; $i < count($this->segmentation); $i += 2) {
+            $points[] = ['x' => $this->segmentation[$i], 'y' => $this->segmentation[$i + 1]];
+        }
+
+        // Calculate the average center (geometric center) of the points
+        $maxY = max(array_column($points, 'y'));
+        $minY = min(array_column($points, 'y'));
+        $maxX = max(array_column($points, 'x'));
+        $minX = min(array_column($points, 'x'));
+        $centerX = ($maxX + $minX) / 2;
+        $centerY = ($maxY + $minY) / 2;
+
+        // Calculate the distance from the first point to the center (radius)
+        $initialRadius = $this->euclidean_distance($points[0]['x'], $points[0]['y'], $centerX, $centerY);
+
+        // Check if all points are equidistant from the center
+        foreach ($points as $point) {
+            $radius = $this->euclidean_distance($point['x'], $point['y'], $centerX, $centerY);
+            if (abs($radius - $initialRadius) > $tolerance) {
+                return false;
+            }
+        }
+
+        // If all points are within the tolerance range, they form a circle
+        return true;
     }
 
     function euclidean_distance($x1, $y1, $x2, $y2)
