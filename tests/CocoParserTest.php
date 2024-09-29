@@ -76,6 +76,12 @@ class CocoParserTest extends TestCase
 
         $annotations = $file->getAnnotations();
         $this->assertCount(6, $annotations);
+        $this->assertSame(Shape::rectangle(), $annotations[0]->shape);
+        $this->assertSame(Shape::circle(), $annotations[1]->shape);
+        $this->assertSame(Shape::line(), $annotations[2]->shape);
+        $this->assertSame(Shape::polygon(), $annotations[3]->shape);
+        $this->assertSame(Shape::rectangle(), $annotations[4]->shape);
+        $this->assertSame(Shape::polygon(), $annotations[5]->shape);
     }
 
     public function testIsPointShape()
