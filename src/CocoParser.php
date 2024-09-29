@@ -9,7 +9,6 @@ use Biigle\Services\MetadataParsing\Annotation;
 use Biigle\Services\MetadataParsing\ImageMetadata;
 use Biigle\Modules\MetadataCoco\Coco;
 use Biigle\Modules\MetadataCoco\Image;
-use Biigle\Modules\MetadataCoco\Annotation as MetadataAnnotation;
 
 class CocoParser extends MetadataParser
 {
