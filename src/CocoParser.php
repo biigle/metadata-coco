@@ -90,7 +90,6 @@ class CocoParser extends MetadataParser
         });
 
         foreach ($annotations as $annotation) {
-            // LabelAndUser -> User ist der aktuelle User / fake
             $metaDataAnnotation = new Annotation(
                 shape: $annotation->getShape(),
                 points: $annotation->segmentation,

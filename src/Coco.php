@@ -17,7 +17,7 @@ class Coco
         return new User(
             id: 1,
             name: 'COCO Import',
-            uuid: '53df1e88-f547-4164-b3b3-b017ad21a7b9'
+            uuid: null
         );
     }
 

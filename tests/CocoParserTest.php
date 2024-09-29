@@ -98,7 +98,7 @@ class CocoParserTest extends TestCase
         $users = $file->getUsers();
         $cocoUser = Coco::getCocoUser();
         $this->assertCount(1, $users);
-        $this->assertSame($cocoUser->uuid, $users[array_key_first($users)]->uuid);
+        $this->assertSame($cocoUser->name, $users[array_key_first($users)]->name);
 
         $labels = $file->getAnnotationLabels();
         $this->assertCount(1, $labels);
@@ -305,6 +305,7 @@ class CocoParserTest extends TestCase
             'bbox' => null,
             'segmentation' => [[1, 1, 2, 2, 3, 3, 2, 2]]
         ]);
+        $this->assertTrue($lineAnnotation->isLineShape());
         $this->assertSame($lineAnnotation->getShape(), Shape::line());
     }
 
