@@ -150,6 +150,7 @@ class CocoParserTest extends TestCase
         ]);
         $this->assertTrue($rectangleAnnotation->isRectangleShape());
         $this->assertSame($rectangleAnnotation->getShape(), Shape::rectangle());
+        $this->assertSame($rectangleAnnotation->getPoints(), $rectangleAnnotation->segmentation);
     }
 
     public function testIsCircleShape()
@@ -294,6 +295,7 @@ class CocoParserTest extends TestCase
         ]);
         $this->assertTrue($circleAnnotation->isCircleShape());
         $this->assertSame($circleAnnotation->getShape(), Shape::circle());
+        $this->assertSame($circleAnnotation->getPoints(), [1368.16, 1165.54, 106.17000000000007]);
     }
 
     public function testIsLineShape()

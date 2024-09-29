@@ -92,7 +92,7 @@ class CocoParser extends MetadataParser
         foreach ($annotations as $annotation) {
             $metaDataAnnotation = new Annotation(
                 shape: $annotation->getShape(),
-                points: $annotation->segmentation,
+                points: $annotation->getPoints(),
                 labels: $annotation->getLabelAndUsers($this->getCoco()->categories),
             );
             $imageMetaData->addAnnotation($metaDataAnnotation);

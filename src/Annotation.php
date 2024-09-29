@@ -14,7 +14,10 @@ class Annotation
     public ?array $bbox;
     public array $segmentation;
 
-    // Static create method from JSON
+    private ?Shape $shape = null;
+    private ?array $points = null;
+    private ?array $groupedPoints = null;
+
     public static function create(array $data): self
     {
         self::validate($data);
@@ -39,19 +42,65 @@ class Annotation
         }
     }
 
-    public function getLabel(array $categories): Label {
+    public function getLabel(array $categories): Label
+    {
         $categoryIndex = array_search($this->category_id, array_column($categories, 'id'));
         $category = $categories[$categoryIndex];
-        return new Label(id: $category->id, name:  $category->name);
+        return new Label(id: $category->id, name: $category->name);
     }
 
-    public function getLabelAndUsers(array $categories): array {
+    public function getLabelAndUsers(array $categories): array
+    {
         $cocoUser = Coco::getCocoUser();
         $label = $this->getLabel($categories);
         return [new LabelAndUser(label: $label, user: $cocoUser)];
     }
 
-    public function getShape(): Shape
+    public function getPoints(): array
+    {
+        if ($this->isCircleShape()) {
+            return $this->getCirclePoints();
+        }
+        return $this->segmentation;
+    }
+
+    private function getGroupedPoints(): array
+    {
+        if ($this->groupedPoints) {
+            return $this->groupedPoints;
+        }
+        $groupedPoints = [];
+        for ($i = 0; $i < count($this->segmentation); $i += 2) {
+            $groupedPoints[] = ['x' => $this->segmentation[$i], 'y' => $this->segmentation[$i + 1]];
+        }
+        $this->groupedPoints = $groupedPoints;
+        return $groupedPoints;
+    }
+
+    private function getCirclePoints()
+    {
+        if($this->points) {
+            return $this->points;
+        }
+        // Split the coordinates into x, y pairs
+        $points = $this->getGroupedPoints();
+
+        // Calculate the average center (geometric center) of the points
+        $maxY = max(array_column($points, 'y'));
+        $minY = min(array_column($points, 'y'));
+        $maxX = max(array_column($points, 'x'));
+        $minX = min(array_column($points, 'x'));
+        $centerX = ($maxX + $minX) / 2;
+        $centerY = ($maxY + $minY) / 2;
+
+        // Calculate the distance from the first point to the center (radius)
+        $initialRadius = $this->euclidean_distance($points[0]['x'], $points[0]['y'], $centerX, $centerY);
+
+        $this->points = [$centerX, $centerY, $initialRadius];
+        return $this->points;
+    }
+
+    private function detectShape(): Shape
     {
         if (count($this->segmentation) < 2) {
             return Shape::polygon();
@@ -76,6 +125,15 @@ class Annotation
         return Shape::polygon();
     }
 
+    public function getShape(): Shape
+    {
+        if (!$this->shape) {
+            $this->shape = $this->detectShape();
+        }
+
+        return $this->shape;
+    }
+
     public function isPointShape(): bool
     {
         return count($this->segmentation) === 2;
@@ -98,26 +156,10 @@ class Annotation
 
     public function isCircleShape(): bool
     {
-    
         // Tolerance for floating-point comparison
         $tolerance = 0.001;
-
-        // Split the coordinates into x, y pairs
-        $points = [];
-        for ($i = 0; $i < count($this->segmentation); $i += 2) {
-            $points[] = ['x' => $this->segmentation[$i], 'y' => $this->segmentation[$i + 1]];
-        }
-
-        // Calculate the average center (geometric center) of the points
-        $maxY = max(array_column($points, 'y'));
-        $minY = min(array_column($points, 'y'));
-        $maxX = max(array_column($points, 'x'));
-        $minX = min(array_column($points, 'x'));
-        $centerX = ($maxX + $minX) / 2;
-        $centerY = ($maxY + $minY) / 2;
-
-        // Calculate the distance from the first point to the center (radius)
-        $initialRadius = $this->euclidean_distance($points[0]['x'], $points[0]['y'], $centerX, $centerY);
+        $points = $this->getGroupedPoints();
+        list($centerX, $centerY, $initialRadius) = $this->getCirclePoints();
 
         // Check if all points are equidistant from the center
         foreach ($points as $point) {
