@@ -8,7 +8,7 @@ class Image
     public int $width;
     public int $height;
     public string $file_name;
-    public ?int $license = null; // TODO validate this is a valid license ID in the licenses array
+    public ?int $license = null;
     public ?string $flickr_url;
     public ?string $coco_url;
 
