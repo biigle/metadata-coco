@@ -62,7 +62,7 @@ class CocoParserTest extends TestCase
         $metadata = $parser->getMetadata();
 
         $this->assertSame(MediaType::imageId(), $metadata->type->id);
-        $this->assertNull($metadata->name);
+        $this->assertSame("COCO 2017 Volume", $metadata->name);
         $this->assertNull($metadata->url);
         $this->assertNull($metadata->handle);
 
@@ -84,6 +84,17 @@ class CocoParserTest extends TestCase
         $this->assertSame(Shape::rectangle(), $annotations[4]->shape);
         $this->assertSame(Shape::polygon(), $annotations[5]->shape);
 
+        $this->assertSame($annotations[0]->points, [
+            1853.22,
+            596.22,
+            1776.16,
+            799.04,
+            1597.21,
+            731.04,
+            1674.27,
+            528.23
+        ]);
+
         $users = $file->getUsers();
         $cocoUser = Coco::getCocoUser();
         $this->assertCount(1, $users);
@@ -99,7 +110,6 @@ class CocoParserTest extends TestCase
         $this->assertSame("Animal", $annotations[3]->labels[0]->label->name);
         $this->assertSame("Animal", $annotations[4]->labels[0]->label->name);
         $this->assertSame("Animal", $annotations[5]->labels[0]->label->name);
-
     }
 
     public function testIsPointShape()
@@ -123,17 +133,19 @@ class CocoParserTest extends TestCase
             'category_id' => 1,
             'bbox' => null,
             'segmentation' => [
-              [  1853.22,
-                596.22,
-                
-                1776.16,
-                799.04,
-                
-                1597.21,
-                731.04,
+                [
+                    1853.22,
+                    596.22,
 
-                1674.27,
-                528.23]
+                    1776.16,
+                    799.04,
+
+                    1597.21,
+                    731.04,
+
+                    1674.27,
+                    528.23
+                ]
             ],
         ]);
         $this->assertTrue($rectangleAnnotation->isRectangleShape());
@@ -147,7 +159,7 @@ class CocoParserTest extends TestCase
             'image_id' => 1,
             'category_id' => 1,
             'bbox' => null,
-            'segmentation' =>[ [
+            'segmentation' => [[
                 1474.3300000000002,
                 1165.54,
                 1473.8187624307873,

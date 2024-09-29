@@ -1,4 +1,8 @@
 {
+    "info": {
+        "description": "COCO 2017 Volume",
+        "url": "http://cocodataset.org"
+    },
     "images": [
         {
             "height": 1775,
