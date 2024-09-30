@@ -59,7 +59,7 @@ class Annotation
 
     public function getPoints(): array
     {
-        if ($this->isCircleShape()) {
+        if ($this->getShape()->id === Shape::circleId()) {
             return $this->getCirclePoints();
         }
         return $this->segmentation;
