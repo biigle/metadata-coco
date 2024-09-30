@@ -27,13 +27,6 @@ class CocoParserTest extends TestCase
         $this->assertTrue($parser->recognizesFile());
     }
 
-    public function testRecognizesCorrectFileWithLicense()
-    {
-        $file   = new File(__DIR__ . "/files/license-coco-import-volume.json");
-        $parser = new CocoParser($file);
-        $this->assertTrue($parser->recognizesFile());
-    }
-
     public function testRecognizesMissingCategoryFile()
     {
         $file   = new File(__DIR__ . "/files/missing-category-coco-import-volume.json");
@@ -44,13 +37,6 @@ class CocoParserTest extends TestCase
     public function testRecognizesEmptyFile()
     {
         $file   = new File(__DIR__ . "/files/empty.json");
-        $parser = new CocoParser($file);
-        $this->assertFalse($parser->recognizesFile());
-    }
-
-    public function testRecognizesBrokenLicenseFile()
-    {
-        $file   = new File(__DIR__ . "/files/broken-license-coco-import-volume.json");
         $parser = new CocoParser($file);
         $this->assertFalse($parser->recognizesFile());
     }

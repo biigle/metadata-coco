@@ -9,7 +9,6 @@ class Coco
     public Info $info;
     public array $images;
     public array $annotations;
-    public ?array $licenses;
     public array $categories;
 
     public static function getCocoUser(): User
@@ -56,15 +55,7 @@ class Coco
             return Category::create($categoryData);
         }, $data['categories']);
 
-        // Create the License objects
-        if (array_key_exists('licenses', $data)) {
-            $instance->licenses = array_map(function ($licenseData) {
-                return License::create($licenseData);
-            }, $data['licenses']);
-        }
-
         // validate the data consistency
-        $instance->validateLicensesInData();
         $instance->validateCategoriesInData();
         $instance->validateImagesInData();
 
@@ -78,26 +69,6 @@ class Coco
         foreach ($requiredKeys as $key) {
             if (!array_key_exists($key, $data)) {
                 throw new \Exception("Missing key '$key' in Coco");
-            }
-        }
-    }
-
-    /**
-     * Validate that all image license IDs are valid.
-     */
-    public function validateLicensesInData(): void
-    {
-        if (!isset($this->licenses)) {
-            return;
-        }
-
-        $licenseIds = array_map(function ($license) {
-            return $license->id;
-        }, $this->licenses);
-
-        foreach ($this->images as $image) {
-            if (isset($image->license) && !in_array($image->license, $licenseIds)) {
-                throw new \Exception("Invalid license ID '{$image->license}' in image '{$image->id}'");
             }
         }
     }
