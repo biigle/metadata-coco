@@ -12,6 +12,10 @@
       {
          "name": "Martin Zurowietz",
          "email": "m.zurowietz@uni-bielefeld.de"
+      },
+      {
+          "name": "Dominik Fladung",
+          "email": "dominik.fladung@gmx.de"
       }
     ],
     "autoload": {
