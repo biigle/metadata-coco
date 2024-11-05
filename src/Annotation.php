@@ -12,8 +12,8 @@ class Annotation
     public int $id;
     public int $image_id;
     public int $category_id;
-    public ?array $bbox;
     public array $segmentation;
+    public ?array $bbox;
 
     private ?Shape $shape = null;
     private ?array $points = null;
@@ -26,8 +26,8 @@ class Annotation
         $instance->id = $data['id'];
         $instance->image_id = $data['image_id'];
         $instance->category_id = $data['category_id'];
+        $instance->segmentation = is_array($data['segmentation'][0]) ? $data['segmentation'][0] : $data['segmentation'];
         $instance->bbox = $data['bbox'] ?? null;
-        $instance->segmentation = $data['segmentation'][0] ?? null;
 
         return $instance;
     }
@@ -35,7 +35,7 @@ class Annotation
     // Validate the structure
     public static function validate(array $data): void
     {
-        $requiredKeys = ['id', 'image_id', 'category_id'];
+        $requiredKeys = ['id', 'image_id', 'category_id', 'segmentation'];
         foreach ($requiredKeys as $key) {
             if (!array_key_exists($key, $data)) {
                 throw new \Exception("Missing key '$key' in Annotation");

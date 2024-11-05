@@ -2,13 +2,13 @@
 
 namespace Biigle\Tests\Modules\MetadataCoco;
 
-use Symfony\Component\HttpFoundation\File\File;
 use Biigle\MediaType;
-use Biigle\Shape;
 use Biigle\Modules\MetadataCoco\Annotation;
 use Biigle\Modules\MetadataCoco\Coco;
 use Biigle\Modules\MetadataCoco\CocoParser;
-
+use Biigle\Shape;
+use Exception;
+use Symfony\Component\HttpFoundation\File\File;
 use TestCase;
 
 class CocoParserTest extends TestCase
@@ -96,6 +96,29 @@ class CocoParserTest extends TestCase
         $this->assertSame("Animal", $annotations[3]->labels[0]->label->name);
         $this->assertSame("Animal", $annotations[4]->labels[0]->label->name);
         $this->assertSame("Animal", $annotations[5]->labels[0]->label->name);
+    }
+
+    public function testValidateSegmentation()
+    {
+        $this->expectException(Exception::class);
+        Annotation::validate([
+            'id' => 1,
+            'image_id' => 1,
+            'category_id' => 1,
+            'bbox' => null,
+        ]);
+    }
+
+    public function testUseSegmentationSingleArray()
+    {
+        $annotation = Annotation::create([
+            'id' => 1,
+            'image_id' => 1,
+            'category_id' => 1,
+            'bbox' => null,
+            'segmentation' => [1, 1]
+        ]);
+        $this->assertSame([1, 1], $annotation->getPoints());
     }
 
     public function testIsPointShape()
