@@ -40,6 +40,10 @@ class Annotation
             if (!array_key_exists($key, $data)) {
                 throw new \Exception("Missing key '$key' in Annotation");
             }
+
+            if (is_null($data[$key])) {
+                throw new \Exception("Missing value for '$key' in Category");
+            }
         }
     }
 
