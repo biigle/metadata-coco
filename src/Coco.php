@@ -70,6 +70,10 @@ class Coco
             if (!array_key_exists($key, $data)) {
                 throw new \Exception("Missing key '$key' in Coco");
             }
+
+            if (is_null($data[$key])) {
+                throw new \Exception("Missing value for '$key' in Coco");
+            }
         }
     }
 
