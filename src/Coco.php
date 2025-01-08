@@ -85,7 +85,7 @@ class Coco
 
         foreach ($this->annotations as $annotation) {
             if (!in_array($annotation->category_id, $categoryIds)) {
-                throw new \Exception("Invalid category ID '{$annotation['category_id']}' in annotation '{$annotation['id']}'");
+                throw new \Exception("Invalid category ID '{$annotation->category_id}' in annotation '{$annotation->id}'");
             }
         }
     }
@@ -98,7 +98,7 @@ class Coco
 
         foreach ($this->annotations as $annotation) {
             if (!in_array($annotation->image_id, $imageIds)) {
-                throw new \Exception("Invalid image ID '{$annotation['image_id']}' in annotation '{$annotation['id']}'");
+                throw new \Exception("Invalid image ID '{$annotation->image_id}' in annotation '{$annotation->id}'");
             }
         }
     }
