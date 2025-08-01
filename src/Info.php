@@ -11,7 +11,6 @@ class Info
     public ?string $url;
     public ?string $date_created;
 
-    // Static create method from JSON
     public static function create(array $data): self
     {
         $instance = new self();
@@ -34,17 +33,14 @@ class Info
             return null;
         }
 
-        // If it's already an int, return as-is
         if (is_int($year)) {
             return $year;
         }
 
-        // If it's a numeric string (including floats), convert to int
         if (is_numeric($year)) {
             return (int) $year;
         }
 
-        // For non-numeric strings (including empty string), return null
         return null;
     }
 }
