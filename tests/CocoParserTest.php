@@ -6,6 +6,7 @@ use Biigle\MediaType;
 use Biigle\Modules\MetadataCoco\Annotation;
 use Biigle\Modules\MetadataCoco\Coco;
 use Biigle\Modules\MetadataCoco\CocoParser;
+use Biigle\Modules\MetadataCoco\Info;
 use Biigle\Shape;
 use Exception;
 use Symfony\Component\HttpFoundation\File\File;
@@ -330,5 +331,68 @@ class CocoParserTest extends TestCase
             'segmentation' => [[1, 1, 2, 2, 3, 3, 4, 4, 1, 1]]
         ]);
         $this->assertSame($polygonAnnotation->getShape(), Shape::polygon());
+    }
+
+    public function testInfoCreateWithIntegerYear()
+    {
+        $info = Info::create(['year' => 2017]);
+        $this->assertSame(2017, $info->year);
+    }
+
+    public function testInfoCreateWithStringYear()
+    {
+        $info = Info::create(['year' => "2017"]);
+        $this->assertSame(2017, $info->year);
+    }
+
+    public function testInfoCreateWithFloatStringYear()
+    {
+        $info = Info::create(['year' => "2017.5"]);
+        $this->assertSame(2017, $info->year);
+    }
+
+    public function testInfoCreateWithEmptyStringYear()
+    {
+        $info = Info::create(['year' => ""]);
+        $this->assertNull($info->year);
+    }
+
+    public function testInfoCreateWithNonNumericStringYear()
+    {
+        $info = Info::create(['year' => "unknown"]);
+        $this->assertNull($info->year);
+    }
+
+    public function testInfoCreateWithNullYear()
+    {
+        $info = Info::create(['year' => null]);
+        $this->assertNull($info->year);
+    }
+
+    public function testInfoCreateWithoutYear()
+    {
+        $info = Info::create([]);
+        $this->assertNull($info->year);
+    }
+
+    public function testInfoCreateWithOtherFields()
+    {
+        $data = [
+            'year' => "2023",
+            'version' => "1.0",
+            'description' => "Test COCO dataset",
+            'contributor' => "Test Contributor",
+            'url' => "https://example.com",
+            'date_created' => "2023-01-01"
+        ];
+
+        $info = Info::create($data);
+
+        $this->assertSame(2023, $info->year);
+        $this->assertSame("1.0", $info->version);
+        $this->assertSame("Test COCO dataset", $info->description);
+        $this->assertSame("Test Contributor", $info->contributor);
+        $this->assertSame("https://example.com", $info->url);
+        $this->assertSame("2023-01-01", $info->date_created);
     }
 }
