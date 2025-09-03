@@ -101,12 +101,37 @@ class CocoParserTest extends TestCase
     public function testValidateSegmentation()
     {
         $this->expectException(Exception::class);
+        $this->expectExceptionMessage("Either 'segmentation' or 'bbox' must be provided in Annotation");
         Annotation::validate([
             'id' => 1,
             'image_id' => 1,
             'category_id' => 1,
             'bbox' => null,
         ]);
+    }
+
+    public function testValidateBboxOnly()
+    {
+        // This should not throw an exception
+        Annotation::validate([
+            'id' => 1,
+            'image_id' => 1,
+            'category_id' => 1,
+            'bbox' => [10, 20, 30, 40],
+        ]);
+        $this->assertTrue(true); // If we get here, validation passed
+    }
+
+    public function testValidateSegmentationOnly()
+    {
+        // This should not throw an exception
+        Annotation::validate([
+            'id' => 1,
+            'image_id' => 1,
+            'category_id' => 1,
+            'segmentation' => [1, 2, 3, 4],
+        ]);
+        $this->assertTrue(true); // If we get here, validation passed
     }
 
     public function testUseSegmentationSingleArray()
@@ -160,6 +185,28 @@ class CocoParserTest extends TestCase
         $this->assertTrue($rectangleAnnotation->isRectangleShape());
         $this->assertSame($rectangleAnnotation->getShape(), Shape::rectangle());
         $this->assertSame($rectangleAnnotation->getPoints(), $rectangleAnnotation->segmentation);
+    }
+
+        public function testIsRectangleShapeBboxOnly()
+    {
+        $rectangleAnnotation = Annotation::create([
+            'id' => 1,
+            'image_id' => 1,
+            'category_id' => 1,
+            'bbox' => [1674.27, 528.23, 178.95, 270.81],
+            'segmentation' => null
+        ]);
+        $this->assertTrue($rectangleAnnotation->isRectangleShape());
+        $this->assertSame($rectangleAnnotation->getShape(), Shape::rectangle());
+        
+        // Test that getPoints() correctly converts bbox to points
+        $expectedPoints = [
+            1674.27, 528.23,           // top-left
+            1853.22, 528.23,           // top-right (1674.27 + 178.95)
+            1853.22, 799.04,           // bottom-right (528.23 + 270.81)
+            1674.27, 799.04            // bottom-left
+        ];
+        $this->assertSame($expectedPoints, $rectangleAnnotation->getPoints());
     }
 
     public function testIsCircleShape()
