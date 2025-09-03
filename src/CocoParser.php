@@ -21,6 +21,10 @@ class CocoParser extends MetadataParser
     {
         return [
             'application/json',
+            // Sometimes JSON file MIME types are not recognized and reported as
+            // text/plain instead. If this is no JSON file, it will be caught by
+            // recognizesFile() later.
+            'text/plain',
         ];
     }
 
