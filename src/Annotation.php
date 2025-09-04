@@ -12,8 +12,8 @@ class Annotation
     public int $id;
     public int $image_id;
     public int $category_id;
-    public array $segmentation;
-    public ?array $bbox;
+    public ?array $segmentation = null;
+    public ?array $bbox = null;
 
     private ?Shape $shape = null;
     private ?array $points = null;
@@ -26,7 +26,23 @@ class Annotation
         $instance->id = $data['id'];
         $instance->image_id = $data['image_id'];
         $instance->category_id = $data['category_id'];
-        $instance->segmentation = is_array($data['segmentation'][0]) ? $data['segmentation'][0] : $data['segmentation'];
+
+        if (isset($data['segmentation'])){
+            $instance->segmentation = is_array($data['segmentation'][0]) ? $data['segmentation'][0] : $data['segmentation'];
+        } elseif (isset($data['bbox'])) {
+            // Populate segmentation from bbox: [x, y, width, height] => rectangle
+            $bbox = $data['bbox'];
+            $x = $bbox[0];
+            $y = $bbox[1];
+            $w = $bbox[2];
+            $h = $bbox[3];
+            $instance->segmentation = [
+                $x, $y,           // top-left
+                $x + $w, $y,      // top-right
+                $x + $w, $y + $h, // bottom-right
+                $x, $y + $h       // bottom-left
+            ];
+        }
         $instance->bbox = $data['bbox'] ?? null;
 
         return $instance;
@@ -35,15 +51,18 @@ class Annotation
     // Validate the structure
     public static function validate(array $data): void
     {
-        $requiredKeys = ['id', 'image_id', 'category_id', 'segmentation'];
+        $requiredKeys = ['id', 'image_id', 'category_id'];
         foreach ($requiredKeys as $key) {
             if (!array_key_exists($key, $data)) {
                 throw new \Exception("Missing key '$key' in Annotation");
             }
-
             if (is_null($data[$key])) {
-                throw new \Exception("Missing value for '$key' in Category");
+                throw new \Exception("Missing value for '$key' in Annotation");
             }
+        }
+        // At least one of segmentation or bbox must be provided
+        if (!isset($data['segmentation']) && !isset($data['bbox'])) {
+            throw new \Exception("Annotation must have at least 'segmentation' or 'bbox' field");
         }
     }
 
