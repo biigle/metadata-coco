@@ -217,17 +217,15 @@ class Annotation
             return false;
         }
 
-        // Toleranz für Gleitkomma-Vergleiche
+        // Tolerance for float comparison.
         $tolerance = 0.01;
 
-        // Punkte (x1, y1), (x2, y2), (x3, y3), (x4, y4)
         list($x1, $y1, $x2, $y2, $x3, $y3, $x4, $y4) = $this->segmentation;
 
-        // Berechne die Diagonalen
-        $diag1 = $this->euclidean_distance($x1, $y1, $x3, $y3); // Diagonale P1 -> P3
-        $diag2 = $this->euclidean_distance($x2, $y2, $x4, $y4); // Diagonale P2 -> P4
+        $diag1 = $this->euclidean_distance($x1, $y1, $x3, $y3);
+        $diag2 = $this->euclidean_distance($x2, $y2, $x4, $y4);
 
-        // Prüfen, ob gegenüberliegende Seiten gleich lang sind und Diagonalen gleich lang sind
+        // If diagonals are equal we have a rectangle.
         return abs($diag1 - $diag2) < $tolerance;
     }
 }
