@@ -3,12 +3,13 @@
 namespace Biigle\Modules\MetadataCoco;
 
 use Biigle\MediaType;
-use Biigle\Services\MetadataParsing\MetadataParser;
-use Biigle\Services\MetadataParsing\VolumeMetadata;
-use Biigle\Services\MetadataParsing\ImageAnnotation;
-use Biigle\Services\MetadataParsing\ImageMetadata;
 use Biigle\Modules\MetadataCoco\Coco;
 use Biigle\Modules\MetadataCoco\Image;
+use Biigle\Services\MetadataParsing\ImageAnnotation;
+use Biigle\Services\MetadataParsing\ImageMetadata;
+use Biigle\Services\MetadataParsing\MetadataParser;
+use Biigle\Services\MetadataParsing\VolumeMetadata;
+use Illuminate\Support\Collection;
 
 class CocoParser extends MetadataParser
 {
@@ -74,12 +75,17 @@ class CocoParser extends MetadataParser
             handle: null,
         );
 
+        $annotations = collect($coco->annotations)->groupBy('image_id');
+        $categories = $coco->categories;
+
         foreach ($coco->images as $image) {
             $imageMetaData = new ImageMetadata(
                 name: $image->file_name
             );
 
-            $this->processImageAnnotations($image, $imageMetaData);
+            if ($annotations->has($image->id)) {
+                $imageMetaData->annotations = $this->processImageAnnotations($annotations->get($image->id), $categories);
+            }
 
             $metadata->addFile($imageMetaData);
         }
@@ -87,19 +93,14 @@ class CocoParser extends MetadataParser
         return $metadata;
     }
 
-    private function processImageAnnotations(Image $image, ImageMetadata $imageMetaData)
+    private function processImageAnnotations(Collection $annotations, array $categories)
     {
-        $annotations = array_filter($this->getCoco()->annotations, function ($annotation) use ($image) {
-            return $annotation->image_id === $image->id;
-        });
-
-        foreach ($annotations as $annotation) {
-            $metaDataAnnotation = new ImageAnnotation(
+        return $annotations->map(function ($annotation) use ($categories) {
+            return new ImageAnnotation(
                 shape: $annotation->getShape(),
                 points: $annotation->getPoints(),
-                labels: $annotation->getLabelAndUsers($this->getCoco()->categories),
+                labels: $annotation->getLabelAndUsers($categories),
             );
-            $imageMetaData->addAnnotation($metaDataAnnotation);
-        }
+        })->toArray();
     }
 }

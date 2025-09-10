@@ -51,9 +51,11 @@ class Coco
         }, $data['annotations']);
 
         // Create the Category objects
-        $instance->categories = array_map(function ($categoryData) {
+        $categories = array_map(function ($categoryData) {
             return Category::create($categoryData);
         }, $data['categories']);
+
+        $instance->categories = array_combine(array_map(fn ($c) => $c->id, $categories), $categories);
 
         // validate the data consistency
         $instance->validateCategoriesInData();
