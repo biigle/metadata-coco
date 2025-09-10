@@ -163,6 +163,37 @@ class CocoParserTest extends TestCase
         $this->assertSame($rectangleAnnotation->getPoints(), $rectangleAnnotation->segmentation);
     }
 
+    public function testIsRectangleShapeWithMorePoints()
+    {
+        $rectangleAnnotation = Annotation::create([
+            'id' => 1,
+            'image_id' => 1,
+            'category_id' => 1,
+            'bbox' => null,
+            'segmentation' => [
+                [
+                    1853.22,
+                    596.22,
+
+                    1776.16,
+                    799.04,
+
+                    1597.21,
+                    731.04,
+
+                    1674.27,
+                    528.23,
+
+                    1853.22,
+                    596.22,
+                ]
+            ],
+        ]);
+        $this->assertTrue($rectangleAnnotation->isRectangleShape());
+        $this->assertSame($rectangleAnnotation->getShape(), Shape::rectangle());
+        $this->assertSame($rectangleAnnotation->getPoints(), array_slice($rectangleAnnotation->segmentation, 0, 8));
+    }
+
     public function testIsCircleShape()
     {
         $circleAnnotation = Annotation::create([
@@ -328,7 +359,7 @@ class CocoParserTest extends TestCase
             'image_id' => 1,
             'category_id' => 1,
             'bbox' => null,
-            'segmentation' => [[1, 1, 2, 2, 3, 3, 4, 4, 1, 1]]
+            'segmentation' => [[1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 1]]
         ]);
         $this->assertSame($polygonAnnotation->getShape(), Shape::polygon());
     }

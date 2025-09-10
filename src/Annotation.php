@@ -68,8 +68,8 @@ class Annotation
 
     public function getLabel(array $categories): Label
     {
-        $categoryIndex = array_search($this->category_id, array_column($categories, 'id'));
-        $category = $categories[$categoryIndex];
+        $category = $categories[$this->category_id];
+
         return new Label(id: $category->id, name: $category->name);
     }
 
@@ -77,6 +77,7 @@ class Annotation
     {
         $cocoUser = Coco::getCocoUser();
         $label = $this->getLabel($categories);
+
         return [new LabelAndUser(label: $label, user: $cocoUser)];
     }
 
@@ -85,6 +86,11 @@ class Annotation
         if ($this->getShape()->id === Shape::circleId()) {
             return $this->getCirclePoints();
         }
+
+        if ($this->getShape()->id === Shape::rectangleId()) {
+            return array_slice($this->segmentation, 0, 8);
+        }
+
         return $this->segmentation;
     }
 
@@ -204,27 +210,22 @@ class Annotation
 
     public function isRectangleShape(): bool
     {
-        if (count($this->segmentation) !== 8) {
+        // Some rectangles have an additional last point equalling the first point,
+        // similar to polygons.
+        $segmentationCount = count($this->segmentation);
+        if ($segmentationCount !== 8 && $segmentationCount !== 10) {
             return false;
         }
 
-        // Toleranz für Gleitkomma-Vergleiche
+        // Tolerance for float comparison.
         $tolerance = 0.01;
 
-        // Punkte (x1, y1), (x2, y2), (x3, y3), (x4, y4)
         list($x1, $y1, $x2, $y2, $x3, $y3, $x4, $y4) = $this->segmentation;
 
-        // Berechne die Seitenlängen
-        $d1 = $this->euclidean_distance($x1, $y1, $x2, $y2); // Distanz zwischen P1 und P2
-        $d2 = $this->euclidean_distance($x2, $y2, $x3, $y3); // Distanz zwischen P2 und P3
-        $d3 = $this->euclidean_distance($x3, $y3, $x4, $y4); // Distanz zwischen P3 und P4
-        $d4 = $this->euclidean_distance($x4, $y4, $x1, $y1); // Distanz zwischen P4 und P1
+        $diag1 = $this->euclidean_distance($x1, $y1, $x3, $y3);
+        $diag2 = $this->euclidean_distance($x2, $y2, $x4, $y4);
 
-        // Berechne die Diagonalen
-        $diag1 = $this->euclidean_distance($x1, $y1, $x3, $y3); // Diagonale P1 -> P3
-        $diag2 = $this->euclidean_distance($x2, $y2, $x4, $y4); // Diagonale P2 -> P4
-
-        // Prüfen, ob gegenüberliegende Seiten gleich lang sind und Diagonalen gleich lang sind
-        return abs($d1 - $d3) < $tolerance && abs($d2 - $d4) < $tolerance && abs($diag1 - $diag2) < $tolerance;
+        // If diagonals are equal we have a rectangle.
+        return abs($diag1 - $diag2) < $tolerance;
     }
 }
