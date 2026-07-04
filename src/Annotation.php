@@ -9,9 +9,9 @@ use Biigle\Services\MetadataParsing\LabelAndUser;
 
 class Annotation
 {
-    public int $id;
-    public int $image_id;
-    public int $category_id;
+    public string $id;
+    public string $image_id;
+    public string $category_id;
     public ?array $segmentation = null;
     public ?array $bbox = null;
 
@@ -23,9 +23,9 @@ class Annotation
     {
         self::validate($data);
         $instance = new self();
-        $instance->id = $data['id'];
-        $instance->image_id = $data['image_id'];
-        $instance->category_id = $data['category_id'];
+        $instance->id = (string) $data['id'];
+        $instance->image_id = (string) $data['image_id'];
+        $instance->category_id = (string) $data['category_id'];
 
         if (isset($data['segmentation'])){
             $instance->segmentation = is_array($data['segmentation'][0]) ? $data['segmentation'][0] : $data['segmentation'];

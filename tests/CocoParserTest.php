@@ -472,4 +472,40 @@ class CocoParserTest extends TestCase
         ];
         $this->assertSame($expectedPoints, $rectangleAnnotation->getPoints());
     }
+
+    public function testCreateWithStringIds()
+    {
+        $coco = Coco::create([
+            'images' => [
+                [
+                    'id' => 'image-1',
+                    'width' => 100,
+                    'height' => 200,
+                    'file_name' => 'image.jpg',
+                ],
+            ],
+            'annotations' => [
+                [
+                    'id' => 'annotation-1',
+                    'image_id' => 'image-1',
+                    'category_id' => 'category-1',
+                    'bbox' => [10, 20, 30, 40],
+                ],
+            ],
+            'categories' => [
+                [
+                    'id' => 'category-1',
+                    'name' => 'Animal',
+                ],
+            ],
+        ]);
+
+        $this->assertSame('image-1', $coco->images[0]->id);
+        $this->assertSame('annotation-1', $coco->annotations[0]->id);
+        $this->assertSame('image-1', $coco->annotations[0]->image_id);
+        $this->assertSame('category-1', $coco->annotations[0]->category_id);
+        $this->assertArrayHasKey('category-1', $coco->categories);
+        $this->assertSame('category-1', $coco->categories['category-1']->id);
+        $this->assertSame('Animal', $coco->annotations[0]->getLabel($coco->categories)->name);
+    }
 }
