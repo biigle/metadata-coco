@@ -31,5 +31,9 @@ class Category
                 throw new \Exception("Missing value for '$key' in Category");
             }
         }
+
+        if (!is_scalar($data['id'])) {
+            throw new \Exception("Invalid value for 'id' in Category");
+        }
     }
 }

@@ -4,8 +4,10 @@ namespace Biigle\Tests\Modules\MetadataCoco;
 
 use Biigle\MediaType;
 use Biigle\Modules\MetadataCoco\Annotation;
+use Biigle\Modules\MetadataCoco\Category;
 use Biigle\Modules\MetadataCoco\Coco;
 use Biigle\Modules\MetadataCoco\CocoParser;
+use Biigle\Modules\MetadataCoco\Image;
 use Biigle\Modules\MetadataCoco\Info;
 use Biigle\Shape;
 use Exception;
@@ -507,5 +509,63 @@ class CocoParserTest extends TestCase
         $this->assertArrayHasKey('category-1', $coco->categories);
         $this->assertSame('category-1', $coco->categories['category-1']->id);
         $this->assertSame('Animal', $coco->annotations[0]->getLabel($coco->categories)->name);
+    }
+
+    public function testValidateImageRejectsNonScalarId()
+    {
+        $this->expectException(Exception::class);
+
+        Image::validate([
+            'id' => ['image-1'],
+            'width' => 100,
+            'height' => 200,
+            'file_name' => 'image.jpg',
+        ]);
+    }
+
+    public function testValidateCategoryRejectsNonScalarId()
+    {
+        $this->expectException(Exception::class);
+
+        Category::validate([
+            'id' => ['category-1'],
+            'name' => 'Animal',
+        ]);
+    }
+
+    public function testValidateAnnotationRejectsNonScalarId()
+    {
+        $this->expectException(Exception::class);
+
+        Annotation::validate([
+            'id' => ['annotation-1'],
+            'image_id' => 'image-1',
+            'category_id' => 'category-1',
+            'bbox' => [10, 20, 30, 40],
+        ]);
+    }
+
+    public function testValidateAnnotationRejectsEmptySegmentationWithoutBbox()
+    {
+        $this->expectException(Exception::class);
+
+        Annotation::validate([
+            'id' => 'annotation-1',
+            'image_id' => 'image-1',
+            'category_id' => 'category-1',
+            'segmentation' => [],
+        ]);
+    }
+
+    public function testValidateAnnotationRejectsNonArraySegmentation()
+    {
+        $this->expectException(Exception::class);
+
+        Annotation::validate([
+            'id' => 'annotation-1',
+            'image_id' => 'image-1',
+            'category_id' => 'category-1',
+            'segmentation' => 'invalid',
+        ]);
     }
 }
