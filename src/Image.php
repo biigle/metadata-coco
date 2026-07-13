@@ -4,7 +4,7 @@ namespace Biigle\Modules\MetadataCoco;
 
 class Image
 {
-    public int $id;
+    public string $id;
     public int $width;
     public int $height;
     public string $file_name;
@@ -19,7 +19,7 @@ class Image
     {
         self::validate($data);
         $instance = new self();
-        $instance->id = $data['id'];
+        $instance->id = (string) $data['id'];
         $instance->width = $data['width'];
         $instance->height = $data['height'];
         $instance->file_name = $data['file_name'];
@@ -43,6 +43,10 @@ class Image
             if (is_null($data[$key])) {
                 throw new \Exception("Missing value for '$key' in Image");
             }
+        }
+
+        if (!is_scalar($data['id'])) {
+            throw new \Exception("Invalid value for 'id' in Image");
         }
     }
 }

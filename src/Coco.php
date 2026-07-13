@@ -81,12 +81,8 @@ class Coco
 
     public function validateCategoriesInData(): void
     {
-        $categoryIds = array_map(function ($category) {
-            return $category->id;
-        }, $this->categories);
-
         foreach ($this->annotations as $annotation) {
-            if (!in_array($annotation->category_id, $categoryIds)) {
+            if (!array_key_exists($annotation->category_id, $this->categories)) {
                 throw new \Exception("Invalid category ID '{$annotation->category_id}' in annotation '{$annotation->id}'");
             }
         }
@@ -94,12 +90,12 @@ class Coco
 
     public function validateImagesInData(): void
     {
-        $imageIds = array_map(function ($image) {
+        $imageIds = array_flip(array_map(function ($image) {
             return $image->id;
-        }, $this->images);
+        }, $this->images));
 
         foreach ($this->annotations as $annotation) {
-            if (!in_array($annotation->image_id, $imageIds)) {
+            if (!array_key_exists($annotation->image_id, $imageIds)) {
                 throw new \Exception("Invalid image ID '{$annotation->image_id}' in annotation '{$annotation->id}'");
             }
         }

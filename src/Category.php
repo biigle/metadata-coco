@@ -4,7 +4,7 @@ namespace Biigle\Modules\MetadataCoco;
 
 class Category
 {
-    public int $id;
+    public string $id;
     public string $name;
 
     // Static create method from JSON
@@ -12,7 +12,7 @@ class Category
     {
         self::validate($data);
         $instance = new self();
-        $instance->id = $data['id'];
+        $instance->id = (string) $data['id'];
         $instance->name = $data['name'];
 
         return $instance;
@@ -30,6 +30,10 @@ class Category
             if (is_null($data[$key])) {
                 throw new \Exception("Missing value for '$key' in Category");
             }
+        }
+
+        if (!is_scalar($data['id'])) {
+            throw new \Exception("Invalid value for 'id' in Category");
         }
     }
 }

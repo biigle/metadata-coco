@@ -9,9 +9,9 @@ use Biigle\Services\MetadataParsing\LabelAndUser;
 
 class Annotation
 {
-    public int $id;
-    public int $image_id;
-    public int $category_id;
+    public string $id;
+    public string $image_id;
+    public string $category_id;
     public ?array $segmentation = null;
     public ?array $bbox = null;
 
@@ -23,11 +23,11 @@ class Annotation
     {
         self::validate($data);
         $instance = new self();
-        $instance->id = $data['id'];
-        $instance->image_id = $data['image_id'];
-        $instance->category_id = $data['category_id'];
+        $instance->id = (string) $data['id'];
+        $instance->image_id = (string) $data['image_id'];
+        $instance->category_id = (string) $data['category_id'];
 
-        if (isset($data['segmentation'])){
+        if (isset($data['segmentation']) && !empty($data['segmentation'])){
             $instance->segmentation = is_array($data['segmentation'][0]) ? $data['segmentation'][0] : $data['segmentation'];
         } elseif (isset($data['bbox'])) {
             // Populate segmentation from bbox: [x, y, width, height] => rectangle
@@ -59,10 +59,22 @@ class Annotation
             if (is_null($data[$key])) {
                 throw new \Exception("Missing value for '$key' in Annotation");
             }
+            if (!is_scalar($data[$key])) {
+                throw new \Exception("Invalid value for '$key' in Annotation");
+            }
         }
         // At least one of segmentation or bbox must be provided
         if (!isset($data['segmentation']) && !isset($data['bbox'])) {
             throw new \Exception("Annotation must have at least 'segmentation' or 'bbox' field");
+        }
+        if (isset($data['segmentation'])) {
+            if (!is_array($data['segmentation'])) {
+                throw new \Exception("Invalid value for 'segmentation' in Annotation");
+            }
+
+            if (empty($data['segmentation']) && !isset($data['bbox'])) {
+                throw new \Exception("Missing value for 'segmentation' in Annotation");
+            }
         }
     }
 
