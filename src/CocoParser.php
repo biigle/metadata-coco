@@ -69,7 +69,7 @@ class CocoParser extends MetadataParser
         $coco = $this->getCoco();
 
         $metadata = new VolumeMetadata(
-            type: MediaType::image(),
+            type: MediaType::IMAGE,
             name: $coco->info->description ?? null,
             url: null,
             handle: null,
