@@ -66,12 +66,12 @@ class CocoParserTest extends TestCase
 
         $annotations = $file->getAnnotations();
         $this->assertCount(6, $annotations);
-        $this->assertSame(Shape::RECTANGLE->value, $annotations[0]->shape);
-        $this->assertSame(Shape::CIRCLE->value, $annotations[1]->shape);
-        $this->assertSame(Shape::LINE->value, $annotations[2]->shape);
-        $this->assertSame(Shape::POLYGON->value, $annotations[3]->shape);
-        $this->assertSame(Shape::RECTANGLE->value, $annotations[4]->shape);
-        $this->assertSame(Shape::POLYGON->value, $annotations[5]->shape);
+        $this->assertSame(Shape::RECTANGLE, $annotations[0]->shape);
+        $this->assertSame(Shape::CIRCLE, $annotations[1]->shape);
+        $this->assertSame(Shape::LINE, $annotations[2]->shape);
+        $this->assertSame(Shape::POLYGON, $annotations[3]->shape);
+        $this->assertSame(Shape::RECTANGLE, $annotations[4]->shape);
+        $this->assertSame(Shape::POLYGON, $annotations[5]->shape);
 
         $this->assertSame($annotations[0]->points, [
             1853.22,
