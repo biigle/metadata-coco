@@ -95,11 +95,11 @@ class Annotation
 
     public function getPoints(): array
     {
-        if ($this->getShape()->id === Shape::circleId()) {
+        if ($this->getShape() === Shape::CIRCLE) {
             return $this->getCirclePoints();
         }
 
-        if ($this->getShape()->id === Shape::rectangleId()) {
+        if ($this->getShape() === Shape::RECTANGLE) {
             return array_slice($this->segmentation, 0, 8);
         }
 
@@ -145,26 +145,26 @@ class Annotation
     private function detectShape(): Shape
     {
         if (count($this->segmentation) < 2) {
-            return Shape::polygon();
+            return Shape::POLYGON;
         }
 
         if ($this->isPointShape()) {
-            return Shape::point();
+            return Shape::POINT;
         }
 
         if ($this->isRectangleShape()) {
-            return Shape::rectangle();
+            return Shape::RECTANGLE;
         }
 
         if ($this->isLineShape()) {
-            return Shape::line();
+            return Shape::LINE;
         }
 
         if ($this->isCircleShape()) {
-            return Shape::circle();
+            return Shape::CIRCLE;
         }
 
-        return Shape::polygon();
+        return Shape::POLYGON;
     }
 
     public function getShape(): Shape
