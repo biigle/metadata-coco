@@ -2,7 +2,7 @@
 
 namespace Biigle\Modules\MetadataCoco;
 
-use Biigle\MediaType;
+use Biigle\Enums\MediaType;
 use Biigle\Modules\MetadataCoco\Coco;
 use Biigle\Modules\MetadataCoco\Image;
 use Biigle\Services\MetadataParsing\ImageAnnotation;

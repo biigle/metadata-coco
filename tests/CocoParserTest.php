@@ -2,14 +2,14 @@
 
 namespace Biigle\Tests\Modules\MetadataCoco;
 
-use Biigle\MediaType;
+use Biigle\Enums\MediaType;
+use Biigle\Enums\Shape;
 use Biigle\Modules\MetadataCoco\Annotation;
 use Biigle\Modules\MetadataCoco\Category;
 use Biigle\Modules\MetadataCoco\Coco;
 use Biigle\Modules\MetadataCoco\CocoParser;
 use Biigle\Modules\MetadataCoco\Image;
 use Biigle\Modules\MetadataCoco\Info;
-use Biigle\Shape;
 use Exception;
 use Symfony\Component\HttpFoundation\File\File;
 use TestCase;

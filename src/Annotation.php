@@ -2,7 +2,7 @@
 
 namespace Biigle\Modules\MetadataCoco;
 
-use Biigle\Shape;
+use Biigle\Enums\Shape;
 use Biigle\Label as LabelModel;
 use Biigle\Services\MetadataParsing\Label;
 use Biigle\Services\MetadataParsing\LabelAndUser;
