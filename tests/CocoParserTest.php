@@ -2,14 +2,14 @@
 
 namespace Biigle\Tests\Modules\MetadataCoco;
 
-use Biigle\MediaType;
+use Biigle\Enums\MediaType;
+use Biigle\Enums\Shape;
 use Biigle\Modules\MetadataCoco\Annotation;
 use Biigle\Modules\MetadataCoco\Category;
 use Biigle\Modules\MetadataCoco\Coco;
 use Biigle\Modules\MetadataCoco\CocoParser;
 use Biigle\Modules\MetadataCoco\Image;
 use Biigle\Modules\MetadataCoco\Info;
-use Biigle\Shape;
 use Exception;
 use Symfony\Component\HttpFoundation\File\File;
 use TestCase;
@@ -50,7 +50,7 @@ class CocoParserTest extends TestCase
         $parser = new CocoParser($file);
         $metadata = $parser->getMetadata();
 
-        $this->assertSame(MediaType::imageId(), $metadata->type->id);
+        $this->assertSame(MediaType::IMAGE, $metadata->type);
         $this->assertSame("COCO 2017 Volume", $metadata->name);
         $this->assertNull($metadata->url);
         $this->assertNull($metadata->handle);
@@ -66,12 +66,12 @@ class CocoParserTest extends TestCase
 
         $annotations = $file->getAnnotations();
         $this->assertCount(6, $annotations);
-        $this->assertSame(Shape::rectangle(), $annotations[0]->shape);
-        $this->assertSame(Shape::circle(), $annotations[1]->shape);
-        $this->assertSame(Shape::line(), $annotations[2]->shape);
-        $this->assertSame(Shape::polygon(), $annotations[3]->shape);
-        $this->assertSame(Shape::rectangle(), $annotations[4]->shape);
-        $this->assertSame(Shape::polygon(), $annotations[5]->shape);
+        $this->assertSame(Shape::RECTANGLE, $annotations[0]->shape);
+        $this->assertSame(Shape::CIRCLE, $annotations[1]->shape);
+        $this->assertSame(Shape::LINE, $annotations[2]->shape);
+        $this->assertSame(Shape::POLYGON, $annotations[3]->shape);
+        $this->assertSame(Shape::RECTANGLE, $annotations[4]->shape);
+        $this->assertSame(Shape::POLYGON, $annotations[5]->shape);
 
         $this->assertSame($annotations[0]->points, [
             1853.22,
@@ -134,7 +134,7 @@ class CocoParserTest extends TestCase
             'segmentation' => [[1, 1]]
         ]);
         $this->assertTrue($pointAnnotation->isPointShape());
-        $this->assertSame($pointAnnotation->getShape(), Shape::point());
+        $this->assertSame($pointAnnotation->getShape(), Shape::POINT);
     }
 
     public function testIsRectangleShape()
@@ -161,7 +161,7 @@ class CocoParserTest extends TestCase
             ],
         ]);
         $this->assertTrue($rectangleAnnotation->isRectangleShape());
-        $this->assertSame($rectangleAnnotation->getShape(), Shape::rectangle());
+        $this->assertSame($rectangleAnnotation->getShape(), Shape::RECTANGLE);
         $this->assertSame($rectangleAnnotation->getPoints(), $rectangleAnnotation->segmentation);
     }
 
@@ -192,7 +192,7 @@ class CocoParserTest extends TestCase
             ],
         ]);
         $this->assertTrue($rectangleAnnotation->isRectangleShape());
-        $this->assertSame($rectangleAnnotation->getShape(), Shape::rectangle());
+        $this->assertSame($rectangleAnnotation->getShape(), Shape::RECTANGLE);
         $this->assertSame($rectangleAnnotation->getPoints(), array_slice($rectangleAnnotation->segmentation, 0, 8));
     }
 
@@ -337,7 +337,7 @@ class CocoParserTest extends TestCase
             ]]
         ]);
         $this->assertTrue($circleAnnotation->isCircleShape());
-        $this->assertSame($circleAnnotation->getShape(), Shape::circle());
+        $this->assertSame($circleAnnotation->getShape(), Shape::CIRCLE);
         $this->assertSame($circleAnnotation->getPoints(), [1368.16, 1165.54, 106.17000000000007]);
     }
 
@@ -351,7 +351,7 @@ class CocoParserTest extends TestCase
             'segmentation' => [[1, 1, 2, 2, 3, 3, 2, 2]]
         ]);
         $this->assertTrue($lineAnnotation->isLineShape());
-        $this->assertSame($lineAnnotation->getShape(), Shape::line());
+        $this->assertSame($lineAnnotation->getShape(), Shape::LINE);
     }
 
     public function testIsPolygonShape()
@@ -363,7 +363,7 @@ class CocoParserTest extends TestCase
             'bbox' => null,
             'segmentation' => [[1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 1]]
         ]);
-        $this->assertSame($polygonAnnotation->getShape(), Shape::polygon());
+        $this->assertSame($polygonAnnotation->getShape(), Shape::POLYGON);
     }
 
     public function testInfoCreateWithIntegerYear()
@@ -463,7 +463,7 @@ class CocoParserTest extends TestCase
             'segmentation' => null
         ]);
         $this->assertTrue($rectangleAnnotation->isRectangleShape());
-        $this->assertSame($rectangleAnnotation->getShape(), Shape::rectangle());
+        $this->assertSame($rectangleAnnotation->getShape(), Shape::RECTANGLE);
 
         // Test that getPoints() correctly converts bbox to points
         $expectedPoints = [
